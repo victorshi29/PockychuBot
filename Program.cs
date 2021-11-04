@@ -10,7 +10,7 @@ namespace twitchchatbot
             Console.WriteLine("Hello World!");
 
             string uri = "irc.chat.twitch.tv";
-            string password = "c7lmtmebed84ctn5fpbhtbppbt69bc";
+            string password = "";
             string botUsername = "pockychubot";
             int port = 6667;
             string line, message, sender;
