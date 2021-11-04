@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace twitchchatbot
@@ -13,18 +13,10 @@ namespace twitchchatbot
             string password = "";
             string botUsername = "pockychubot";
             int port = 6667;
-            string line = "";
+            string line, message, sender;
             string[] split;
-            string message;
-            string sender;
+            int secondColonPosition;
 
-            /*split = ":tmi.twitch.tv 002 pockychubot :Your host is tmi.twitch.tv".Split(" ");
-            foreach(string str in split)
-            {
-                Console.WriteLine(str);
-            }
-            */
-            
             var tcpClient = new System.Net.Sockets.TcpClient();
             await tcpClient.ConnectAsync(uri, port);
             var streamWriter = new System.IO.StreamWriter(tcpClient.GetStream()) { NewLine = "\r\n", AutoFlush = true};
@@ -48,10 +40,14 @@ namespace twitchchatbot
                     Console.WriteLine("PING");
                     await streamWriter.WriteLineAsync($"PONG {split[1]}");
                 }
+
+                //sample line from streamReader
+                //:morenaptime!morenaptime@morenaptime.tmi.twitch.tv PRIVMSG #morenaptime :!pika sfsfdsf
                 if (split[1].Equals("PRIVMSG"))
                 {
                     sender = split[2].Substring(1);
-                    message = split[3].Substring(1);
+                    secondColonPosition = line.IndexOf(':', 1);
+                    message = line.Substring(secondColonPosition + 1);
                     Console.WriteLine(message);
                     if (message.Equals("!pika"))
                     {
